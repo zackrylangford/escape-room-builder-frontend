@@ -16,8 +16,8 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
   var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
 
   var poolData = {
-    UserPoolId: 'us-east-1_lf6jSzSlE', // Replace with your User Pool Id
-    ClientId: '6bqb321n48lbh7ca7s95t21k0d' // Replace with your App Client Id
+    UserPoolId: 'us-east-1_lf6jSzSlE', 
+    ClientId: '6bqb321n48lbh7ca7s95t21k0d'
   };
   var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
   var userData = {
