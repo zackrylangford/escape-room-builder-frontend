@@ -3,17 +3,22 @@ layout: default
 title: Home
 ---
 
-    <h1>Hello World!</h1>
+    <h1>AWS Lambda DynamoDB Interface</h1>
 
-    <h1>Games</h1>
-    <table id="gamesTable">
-        <thead>
-            <tr>
-                <th>Game ID</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="gamesTableBody">
-        </tbody>
-    </table>
+    <button id="getAllItems">Get All Items</button>
+    <div id="items"></div>
+
+    <h3>Get Item by ID</h3>
+    <input type="text" id="getItemId" placeholder="Enter Item ID">
+    <button id="getItem">Get Item</button>
+    <div id="singleItem"></div>
+
+    <h3>Delete Item by ID</h3>
+    <input type="text" id="deleteItemId" placeholder="Enter Item ID">
+    <button id="deleteItem">Delete Item</button>
+
+    <h3>Add a New Item</h3>
+    <input type="text" id="newItemId" placeholder="Enter New Item ID">
+    <input type="text" id="newItemName" placeholder="Enter New Item Name">
+    <button id="addItem">Add Item</button>
+    
