@@ -1,0 +1,16 @@
+- name: Home
+  link: /
+- name: Login
+  link: /login.html
+- name: logout
+  link: /logout.html
+# - name: About
+#   link: /about.html
+# - name: Blog
+#   link: /blog.html
+# - name: Staff
+#   link: /staff.html
+# - name: Certifications
+#   link: /certifications.html
+# - name: Portfolio
+#   link: /portfolio.html

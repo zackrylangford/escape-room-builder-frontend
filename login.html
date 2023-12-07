@@ -1,0 +1,24 @@
+---
+title: login
+layout: default
+javascript: login
+---
+<!-- Login -->
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <h1>Login</h1>
+    <form id="login-form"> <!-- Added id here -->
+      <div class="mb-3">
+        <label for="username" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="username" name="username" aria-describedby="emailHelp" required> <!-- Changed id to username -->
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+  </div>
+</div>

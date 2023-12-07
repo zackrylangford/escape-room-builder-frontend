@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="/">Escape Room Builder</a>
+      <!-- <div class="social-icons d-lg-none">
+
+
+      </div> -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <!-- <div class="social-icons d-none d-lg-flex">
+        </div> -->
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login.html" id="loginLink">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="logoutLink">Logout</a>
+          </li>
+                  
+          <li class="nav-item">
+            <a class="nav-link" href="mailto:zack@cloudzack.com">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <script>
+function logout() {
+  localStorage.removeItem("IdToken");
+  localStorage.removeItem("CognitoIdentityId");
+  document.getElementById('loginLink').style.display = '';     // Show Login
+  document.getElementById('logoutLink').style.display = 'none';// Hide Logout
+  window.location.href = 'login.html';
+}
+
+document.getElementById('logoutLink').addEventListener('click', function(event) {
+  event.preventDefault();
+  logout();
+});
+
+  
+    window.onload = function() {
+      var isLoggedIn = localStorage.getItem("IdToken") !== null;
+      if (isLoggedIn) {
+        document.getElementById('loginLink').style.display = 'none'; // Hide Login
+        document.getElementById('logoutLink').style.display = '';    // Show Logout
+      } else {
+        document.getElementById('loginLink').style.display = '';     // Show Login
+        document.getElementById('logoutLink').style.display = 'none';// Hide Logout
+      }
+    };
+  </script>
+  
