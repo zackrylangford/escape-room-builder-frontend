@@ -30,50 +30,43 @@ function fetchWithAuth(url, options = {}) {
         });
 }
 
-// Get all the items from the DynamoDB table 
-document.getElementById('getAllItems').addEventListener('click', function() {
-    fetchWithAuth('https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/')
-        .then(data => {
-            console.log("Processed Data: ", data);
-            document.getElementById('items').innerText = JSON.stringify(data, null, 2);
+// Function to fetch the list of challenges from your /challenges API endpoint
+function fetchChallenges() {
+    return fetchWithAuth('https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/challenges', {
+        method: 'GET',
+    });
+}
+
+// Function to populate the challenge dropdown
+function populateChallengeDropdown() {
+    const challengeTypeSelects = document.querySelectorAll('.challengeType');
+
+    fetchChallenges()
+        .then(challenges => {
+            // Assuming the API returns an array of challenge objects with id and Description attributes
+            challenges.forEach(challenge => {
+                challengeTypeSelects.forEach(select => {
+                    const option = document.createElement('option');
+                    option.value = challenge.id; // Use id as the value
+                    option.text = challenge.id; // Use id as text as well
+                    select.appendChild(option);
+                });
+            });
         })
         .catch(error => {
-            console.error("Error in processing response: ", error);
+            console.error("Error fetching challenges: ", error);
         });
-});
+}
 
-// Get a single item from the DynamoDB table
-document.getElementById('getItem').addEventListener('click', function() {
-    const id = document.getElementById('getItemId').value;
-    fetchWithAuth(`https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/${id}`)
-        .then(data => {
-            document.getElementById('singleItem').innerText = JSON.stringify(data, null, 2);
-        })
-        .catch(error => {
-            console.error("Error fetching item: ", error);
-        });
-});
 
-// Delete an item from the DynamoDB table
-document.getElementById('deleteItem').addEventListener('click', function() {
-    const id = document.getElementById('deleteItemId').value;
-    fetchWithAuth(`https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/${id}`, { method: 'DELETE' })
-        .then(data => {
-            alert('Item deleted');
-            console.log("Delete response: ", data);
-        })
-        .catch(error => {
-            console.error("Error deleting item: ", error);
-        });
-});
 
-// Add a game to the DynamoDB table
+// Add event listener to "Save Game" button to save the game data to the specified API endpoint
 document.getElementById('saveGame').addEventListener('click', function() {
     // Get the values from the form
     const gameTitle = document.getElementById('gameTitle').value;
     const gameDescription = document.getElementById('gameDescription').value;
     const timeLimit = document.getElementById('timeLimit').value;
-    
+
     // Get the challenge data
     const challenges = [];
     const challengeElements = document.querySelectorAll('.challenge');
@@ -81,7 +74,7 @@ document.getElementById('saveGame').addEventListener('click', function() {
         const challengeTitle = challengeElement.querySelector('.challengeTitle').value;
         const challengeDescription = challengeElement.querySelector('.challengeDescription').value;
         const challengeType = challengeElement.querySelector('.challengeType').value;
-        
+
         // Add the challenge data to the array
         challenges.push({
             title: challengeTitle,
@@ -98,20 +91,71 @@ document.getElementById('saveGame').addEventListener('click', function() {
         challenges: challenges
     };
 
-    // Send the game data to Lambda
-    fetchWithAuth('https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/', { 
+    // Send the game data to the specified API endpoint (replace '/your-api-endpoint' with the actual endpoint)
+    fetchWithAuth('https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(gameData)
     })
-    .then(data => {
-        alert('Game added successfully');
-        console.log("Add game response: ", data);
-    })
-    .catch(error => {
-        console.error("Error adding game: ", error);
-    });
+        .then(data => {
+            alert('Game added successfully');
+            console.log("Add game response: ", data);
+        })
+        .catch(error => {
+            console.error("Error adding game: ", error);
+        });
 });
+// Add event listener to "Add Challenge" button to create a new challenge input form
+document.getElementById('addChallenge').addEventListener('click', function() {
+    console.log("Adding challenge button clicked");
+    createChallengeInput();
+});
+// Function to populate the challenge type select element
+function populateChallengeTypeSelect(challengeTypeSelect) {
+    fetchChallenges()
+        .then(challenges => {
+            challenges.forEach(challenge => {
+                const option = document.createElement('option');
+                option.value = challenge.id;
+                option.text = challenge.id; // Use the Description attribute
+                challengeTypeSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching challenges: ", error);
+        });
+}
 
+// Function to create a new challenge input form
+function createChallengeInput() {
+    const challengeContainer = document.getElementById('challengesContainer');
+    const newChallenge = document.createElement('div');
+    newChallenge.classList.add('challenge');
+
+    // Create input elements for challenge title, description, and type
+    const challengeTitleInput = document.createElement('input');
+    challengeTitleInput.type = 'text';
+    challengeTitleInput.classList.add('challengeTitle');
+    challengeTitleInput.placeholder = 'Enter Challenge Title';
+
+    const challengeDescriptionTextarea = document.createElement('textarea');
+    challengeDescriptionTextarea.classList.add('challengeDescription');
+    challengeDescriptionTextarea.placeholder = 'Enter Challenge Description';
+
+    const challengeTypeSelect = document.createElement('select');
+    challengeTypeSelect.classList.add('challengeType');
+    populateChallengeTypeSelect(challengeTypeSelect); // Populate the select element
+
+    // Append the input elements to the newChallenge div
+    newChallenge.appendChild(challengeTitleInput);
+    newChallenge.appendChild(challengeDescriptionTextarea);
+    newChallenge.appendChild(challengeTypeSelect);
+
+    challengeContainer.appendChild(newChallenge);
+}
+
+
+// Populate the challenge dropdown when the page loads
+populateChallengeDropdown();
