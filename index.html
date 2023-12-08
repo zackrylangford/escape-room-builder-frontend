@@ -4,23 +4,53 @@ title: Home
 javascript: index
 ---
 <div class="protected-content">
-    <h1>AWS Lambda DynamoDB Interface</h1>
-
-    <button id="getAllItems">Get All Items</button>
-    <div id="items"></div>
-
-    <h3>Get Item by ID</h3>
-    <input type="text" id="getItemId" placeholder="Enter Item ID">
-    <button id="getItem">Get Item</button>
-    <div id="singleItem"></div>
-
-    <h3>Delete Item by ID</h3>
-    <input type="text" id="deleteItemId" placeholder="Enter Item ID">
-    <button id="deleteItem">Delete Item</button>
-
-    <h3>Add a New Item</h3>
-    <input type="text" id="newItemId" placeholder="Enter New Item ID">
-    <input type="text" id="newItemName" placeholder="Enter New Item Name">
-    <button id="addItem">Add Item</button>
+    <h1>Create a New Escape Room Game</h1>
     
+    <!-- Game Title -->
+    <label for="gameTitle">Game Title:</label>
+    <input type="text" id="gameTitle" placeholder="Enter Game Title">
+    <br><br>
+    
+    <!-- Description -->
+    <label for="gameDescription">Description:</label>
+    <textarea id="gameDescription" placeholder="Enter Game Description"></textarea>
+    <br><br>
+    
+    <!-- Time Limit -->
+    <label for="timeLimit">Time Limit (in seconds):</label>
+    <input type="number" id="timeLimit" placeholder="Enter Time Limit">
+    <br><br>
+    
+    <!-- Challenges -->
+    <h2>Challenges:</h2>
+    <div id="challengesContainer">
+        <!-- Individual Challenge -->
+        <div class="challenge">
+            <label for="challengeTitle">Challenge Title:</label>
+            <input type="text" class="challengeTitle" placeholder="Enter Challenge Title">
+            <br>
+            <label for="challengeDescription">Challenge Description:</label>
+            <textarea class="challengeDescription" placeholder="Enter Challenge Description"></textarea>
+            <br>
+            <label for="challengeType">Challenge Type:</label>
+            <select class="challengeType" id="challengeType">
+                <!-- Challenge types will be populated dynamically -->
+            </select>
+        </div>
+    </div>
+    <button id="addChallenge">Add Challenge</button>
+    <br><br>
+    
+    <!-- Save Game Button -->
+    <button id="saveGame">Save Game</button>
 </div>
+
+<!-- Existing HTML content above -->
+
+<div class="games-display">
+    <h2>All Games:</h2>
+    <div id="allGames">
+        <!-- Games will be dynamically added here -->
+    </div>
+</div>
+

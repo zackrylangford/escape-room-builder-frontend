@@ -1,0 +1,6 @@
+- name: Trivia
+  value: trivia
+- name: Puzzle
+  value: puzzle
+- name: Physical
+  value: physical
