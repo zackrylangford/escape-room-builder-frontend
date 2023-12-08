@@ -59,7 +59,6 @@ function populateChallengeDropdown() {
 }
 
 
-
 // Add event listener to "Save Game" button to save the game data to the specified API endpoint
 document.getElementById('saveGame').addEventListener('click', function() {
     // Get the values from the form
@@ -92,7 +91,7 @@ document.getElementById('saveGame').addEventListener('click', function() {
     };
 
     // Send the game data to the specified API endpoint (replace '/your-api-endpoint' with the actual endpoint)
-    fetchWithAuth('https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/', {
+fetchWithAuth('https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -107,11 +106,15 @@ document.getElementById('saveGame').addEventListener('click', function() {
             console.error("Error adding game: ", error);
         });
 });
+
+
 // Add event listener to "Add Challenge" button to create a new challenge input form
 document.getElementById('addChallenge').addEventListener('click', function() {
     console.log("Adding challenge button clicked");
     createChallengeInput();
 });
+
+
 // Function to populate the challenge type select element
 function populateChallengeTypeSelect(challengeTypeSelect) {
     fetchChallenges()
@@ -129,28 +132,48 @@ function populateChallengeTypeSelect(challengeTypeSelect) {
 }
 
 // Function to create a new challenge input form
+
 function createChallengeInput() {
     const challengeContainer = document.getElementById('challengesContainer');
     const newChallenge = document.createElement('div');
     newChallenge.classList.add('challenge');
 
-    // Create input elements for challenge title, description, and type
+    // Create labels and input elements for challenge title, description, and type
+    const challengeTitleLabel = document.createElement('label');
+    challengeTitleLabel.textContent = 'Challenge Title:';
+    challengeTitleLabel.setAttribute('for', 'challengeTitle');
+
     const challengeTitleInput = document.createElement('input');
     challengeTitleInput.type = 'text';
     challengeTitleInput.classList.add('challengeTitle');
     challengeTitleInput.placeholder = 'Enter Challenge Title';
 
+    const challengeDescriptionLabel = document.createElement('label');
+    challengeDescriptionLabel.textContent = 'Challenge Description:';
+    challengeDescriptionLabel.setAttribute('for', 'challengeDescription');
+
     const challengeDescriptionTextarea = document.createElement('textarea');
     challengeDescriptionTextarea.classList.add('challengeDescription');
     challengeDescriptionTextarea.placeholder = 'Enter Challenge Description';
+
+    const challengeTypeLabel = document.createElement('label');
+    challengeTypeLabel.textContent = 'Challenge Type:';
+    challengeTypeLabel.setAttribute('for', 'challengeType');
 
     const challengeTypeSelect = document.createElement('select');
     challengeTypeSelect.classList.add('challengeType');
     populateChallengeTypeSelect(challengeTypeSelect); // Populate the select element
 
-    // Append the input elements to the newChallenge div
+    // Append the labels and input elements to the newChallenge div
+    newChallenge.appendChild(challengeTitleLabel);
     newChallenge.appendChild(challengeTitleInput);
+    newChallenge.appendChild(document.createElement('br'));
+
+    newChallenge.appendChild(challengeDescriptionLabel);
     newChallenge.appendChild(challengeDescriptionTextarea);
+    newChallenge.appendChild(document.createElement('br'));
+
+    newChallenge.appendChild(challengeTypeLabel);
     newChallenge.appendChild(challengeTypeSelect);
 
     challengeContainer.appendChild(newChallenge);
