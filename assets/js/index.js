@@ -1,3 +1,6 @@
+// Call to display all user created games when the page initially loads
+displayAllGames();
+
 // Call to setup the challenge dropdown when the page initially loads
 populateChallengeDropdown();
 
@@ -98,7 +101,7 @@ function createChallengeInput() {
     challengeContainer.appendChild(newChallenge);
 }
 
-// Add event listener to "Save Game" button to save the game data to the specified API endpoint
+// Add event listener to "Save Game" button
 document.getElementById('saveGame').addEventListener('click', function() {
     // Get the values from the form
     const gameTitle = document.getElementById('gameTitle').value;
@@ -139,12 +142,18 @@ document.getElementById('saveGame').addEventListener('click', function() {
     })
         .then(data => {
             alert('Game added successfully');
+            resetForm(); // Reset the form and challenges
+            
             console.log("Add game response: ", data);
+            
+            // Display all games after resetting the form
+            displayAllGames();
         })
         .catch(error => {
             console.error("Error adding game: ", error);
         });
 });
+
 
 //function to get the id token from local storage and add it to the headers of the fetch request
 function fetchWithAuth(url, options = {}) {
@@ -174,5 +183,73 @@ function fetchWithAuth(url, options = {}) {
             } else {
                 return response.text();
             }
+        });
+}
+
+
+// Function to reset the form and challenges after a game is successfully added
+function resetForm() {
+    // Reset the main game form
+    document.getElementById('gameTitle').value = '';
+    document.getElementById('gameDescription').value = '';
+    document.getElementById('timeLimit').value = '';
+
+    // Remove all challenge forms except the first one
+    const challengeContainer = document.getElementById('challengesContainer');
+    const challengeForms = challengeContainer.querySelectorAll('.challenge');
+    for (let i = 1; i < challengeForms.length; i++) {
+        challengeContainer.removeChild(challengeForms[i]);
+    }
+}
+
+
+
+// Function to fetch and display all games
+function displayAllGames() {
+    const allGamesList = document.getElementById('allGames');
+
+    // Fetch all games from the database (replace '/your-games-api-endpoint' with the actual endpoint)
+    fetchWithAuth('https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/', {
+        method: 'GET',
+    })
+        .then(games => {
+            // Clear existing list
+            allGamesList.innerHTML = '';
+
+            // Display each game and its challenges in the list
+            games.forEach(game => {
+                const gameContainer = document.createElement('div');
+                gameContainer.classList.add('game');
+
+                // Display game details
+                const gameTitle = document.createElement('h3');
+                gameTitle.textContent = `Game Title: ${game.GameTitle.S}`;
+                gameContainer.appendChild(gameTitle);
+
+                const gameDescription = document.createElement('p');
+                gameDescription.textContent = `Game Description: ${game.GameDescription.S}`;
+                gameContainer.appendChild(gameDescription);
+
+                const timeLimit = document.createElement('p');
+                timeLimit.textContent = `Time Limit (seconds): ${game.TimeLimit.N}`;
+                gameContainer.appendChild(timeLimit);
+
+                // Display challenges for this game
+                const challengesList = document.createElement('ul');
+                challengesList.textContent = 'Challenges:';
+                gameContainer.appendChild(challengesList);
+
+                game.Challenges.L.forEach(challenge => {
+                    const challengeItem = document.createElement('li');
+                    challengeItem.textContent = `Title: ${challenge.M.Title.S}, Description: ${challenge.M.Description.S}, Type: ${challenge.M.Type.S}`;
+                    challengesList.appendChild(challengeItem);
+                });
+
+                // Add the game container to the list
+                allGamesList.appendChild(gameContainer);
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching games: ", error);
         });
 }
