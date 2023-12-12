@@ -1,4 +1,4 @@
-import { fetchWithAuth } from './api.js';
+import { fetchWithAuth, fetchChallenges } from './api.js';
 import { setupModal, showModal, hideModal } from './modal.js';
 
 // Retrieve and display all user-created Escape Rooms
@@ -72,7 +72,6 @@ export function setupEditModal() {
     setupModal('editGameModal');
 }
 
-
 // Function to populate the edit modal with game data
 function populateEditModal(gameData, gameId) {
     console.log("Game Data: ", gameData);
@@ -81,26 +80,39 @@ function populateEditModal(gameData, gameId) {
     document.getElementById('editTimeLimit').value = gameData.TimeLimit.N;
 
     const editChallengesContainer = document.getElementById('editChallengesContainer');
-    console.log("Challenges Container: ", editChallengesContainer); // Verify container existence
-
     editChallengesContainer.innerHTML = '';
 
-    gameData.Challenges.L.forEach((challengeData, index) => {
-        console.log("Processing Challenge: ", challengeData); // Check each challenge
+    fetchChallenges().then(challenges => {
+        gameData.Challenges.L.forEach((challengeData, index) => {
+            const challengeDiv = document.createElement('div');
+            challengeDiv.classList.add('challenge');
+            challengeDiv.setAttribute('data-challenge-index', index);
 
-        const challengeDiv = document.createElement('div');
-        challengeDiv.classList.add('challenge');
-        challengeDiv.setAttribute('data-challenge-index', index);
+            const titleInput = createInputField('challengeTitle', challengeData.M.Title.S, index);
+            const descInput = createInputField('challengeDescription', challengeData.M.Description.S, index);
+            
+            // Create challenge type select element
+            const typeSelect = document.createElement('select');
+            typeSelect.classList.add('challengeType');
+            challenges.forEach(challenge => {
+                const option = document.createElement('option');
+                option.value = challenge.id;
+                option.text = challenge.id; // Use the Description attribute
+                if (challenge.id === challengeData.M.Type.S) {
+                    option.selected = true;
+                }
+                typeSelect.appendChild(option);
+            });
 
-        const titleInput = createInputField('challengeTitle', challengeData.M.Title.S, index);
-        const descInput = createInputField('challengeDescription', challengeData.M.Description.S, index);
-        const typeInput = createInputField('challengeType', challengeData.M.Type.S, index);
-
-        challengeDiv.appendChild(titleInput);
-        challengeDiv.appendChild(descInput);
-        challengeDiv.appendChild(typeInput);
-        editChallengesContainer.appendChild(challengeDiv);
+            challengeDiv.appendChild(titleInput);
+            challengeDiv.appendChild(descInput);
+            challengeDiv.appendChild(typeSelect);
+            editChallengesContainer.appendChild(challengeDiv);
+        });
+    }).catch(error => {
+        console.error("Error fetching challenges: ", error);
     });
+
     document.getElementById('hiddenGameId').value = gameId; 
     showModal('editGameModal');
 }
@@ -113,6 +125,29 @@ function createInputField(fieldName, value, index) {
     input.value = value;
     return input;
 }
+
+
+// Helper function to create a select dropdown for challenge types
+function createChallengeTypeSelect(selectedType, index) {
+    const select = document.createElement('select');
+    select.name = `challengeType[${index}]`;
+    select.classList.add('challengeType');
+
+    // Assuming 'challengeTypes' is an array of available types
+    const challengeTypes = ['Trivia', 'Physical', 'Puzzle'];
+    challengeTypes.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.text = type;
+        if (type === selectedType) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    });
+
+    return select;
+}
+
 
 
 
@@ -135,17 +170,18 @@ document.getElementById('saveChanges').addEventListener('click', function() {
     challengeDivs.forEach(challengeDiv => {
         const titleInput = challengeDiv.querySelector('[name^="challengeTitle"]');
         const descInput = challengeDiv.querySelector('[name^="challengeDescription"]');
-        const typeInput = challengeDiv.querySelector('[name^="challengeType"]');
+        const typeSelect = challengeDiv.querySelector('.challengeType'); // Changed from 'input' to 'select'
 
-        // Only add the challenge if all inputs exist
-        if (titleInput && descInput && typeInput) {
+        // Only add the challenge if all inputs/selects exist
+        if (titleInput && descInput && typeSelect) {
             updatedGameData.challenges.push({
                 title: titleInput.value,
                 description: descInput.value,
-                type: typeInput.value
+                type: typeSelect.value // Capture the selected value from the dropdown
             });
         }
     });
+
 
     // Assuming you have the game ID stored or accessible somehow
     const gameId = document.getElementById('hiddenGameId').value;
