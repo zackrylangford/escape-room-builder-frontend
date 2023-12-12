@@ -1,5 +1,5 @@
 import { fetchWithAuth } from './api.js';
-import { setupModal, showModal } from './modal.js';
+import { setupModal, showModal, hideModal } from './modal.js';
 
 // Retrieve and display all user-created Escape Rooms
 export function displayAllGames() {
@@ -14,18 +14,21 @@ export function displayAllGames() {
         games.forEach(game => {
             const gameContainer = document.createElement('div');
             gameContainer.classList.add('game');
-
+        
             const editIcon = document.createElement('span');
             editIcon.classList.add('edit-icon');
             editIcon.innerHTML = '&#9998;';
+            editIcon.setAttribute('data-game-id', game.id.S);  // Store the game ID
             editIcon.addEventListener('click', function() {
-                fetchGameById(game.id.S).then(gameData => {
-                    populateEditModal(gameData);
+                const gameId = this.getAttribute('data-game-id'); // Retrieve the game ID
+                fetchGameById(gameId).then(gameData => {
+                    populateEditModal(gameData, gameId); // Pass gameId to populateEditModal
                 }).catch(error => {
                     console.error("Error fetching game details: ", error);
                 });
             });
             gameContainer.appendChild(editIcon);
+        
 
             // Add game details to the card
             const gameTitle = document.createElement('h3');
@@ -71,9 +74,8 @@ export function setupEditModal() {
 
 
 // Function to populate the edit modal with game data
-function populateEditModal(gameData) {
-    console.log("Game Data: ", gameData); // Check the received game data
-
+function populateEditModal(gameData, gameId) {
+    console.log("Game Data: ", gameData);
     document.getElementById('editGameTitle').value = gameData.GameTitle.S;
     document.getElementById('editGameDescription').value = gameData.GameDescription.S;
     document.getElementById('editTimeLimit').value = gameData.TimeLimit.N;
@@ -99,7 +101,7 @@ function populateEditModal(gameData) {
         challengeDiv.appendChild(typeInput);
         editChallengesContainer.appendChild(challengeDiv);
     });
-
+    document.getElementById('hiddenGameId').value = gameId; 
     showModal('editGameModal');
 }
 
@@ -121,24 +123,51 @@ function fetchGameById(gameId) {
 }
 
 
-
-// Placeholder for function to handle Save Changes in Edit Modal
 document.getElementById('saveChanges').addEventListener('click', function() {
     const updatedGameData = {
         title: document.getElementById('editGameTitle').value,
         description: document.getElementById('editGameDescription').value,
         timeLimit: document.getElementById('editTimeLimit').value,
-        challenges: Array.from(document.querySelectorAll('.challenge')).map(challengeDiv => {
-            return {
-                title: challengeDiv.querySelector('[name^="challengeTitle"]').value,
-                description: challengeDiv.querySelector('[name^="challengeDescription"]').value,
-                type: challengeDiv.querySelector('[name^="challengeType"]').value
-            };
-        })
+        challenges: []
     };
 
-    console.log('Updated Game Data:', updatedGameData);
-    // TODO: API call to update the game data
+    const challengeDivs = document.querySelectorAll('.challenge');
+    challengeDivs.forEach(challengeDiv => {
+        const titleInput = challengeDiv.querySelector('[name^="challengeTitle"]');
+        const descInput = challengeDiv.querySelector('[name^="challengeDescription"]');
+        const typeInput = challengeDiv.querySelector('[name^="challengeType"]');
 
-    showModal('editGameModal'); // Hide modal after saving
+        // Only add the challenge if all inputs exist
+        if (titleInput && descInput && typeInput) {
+            updatedGameData.challenges.push({
+                title: titleInput.value,
+                description: descInput.value,
+                type: typeInput.value
+            });
+        }
+    });
+
+    // Assuming you have the game ID stored or accessible somehow
+    const gameId = document.getElementById('hiddenGameId').value;
+
+    fetchWithAuth(`https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/${gameId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedGameData)
+    })
+    .then(response => {
+        // console.log('Full Response Object:', response); // Log the full response object
+        // console.log('Response Status Code:', response.status); // Log the status code
+
+    })
+    .then(data => {
+        console.log('Game updated successfully:', data); 
+        hideModal('editGameModal'); // Ensure this function is defined and correctly closes the modal
+        displayAllGames(); // Refresh the list of games
+    })
+    .catch(error => {
+        console.error("Error updating game: ", error);
+    });
 });

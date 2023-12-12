@@ -18,15 +18,15 @@ export function fetchWithAuth(url, options = {}) {
     //console.log("Fetching URL with options: ", url, JSON.stringify(fetchOptions, null, 2));
 
     return fetch(url, fetchOptions)
-        .then(response => {
-            //console.log("Raw Response: ", response);
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.headers.get('content-type')?.includes('application/json') 
+               ? response.json() 
+               : response.text();
+    });
 
-            if (response.ok && response.headers.get('content-type')?.includes('application/json')) {
-                return response.json();
-            } else {
-                return response.text();
-            }
-        });
 }
 
 
