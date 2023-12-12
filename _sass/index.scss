@@ -172,6 +172,7 @@ select {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 15px;
     box-sizing: border-box;
+    position: relative;
 }
 
 .game h3 {
@@ -184,4 +185,15 @@ select {
 
 .game li {
     list-style-type: disc;
+}
+
+
+//Styles for editing games
+.edit-icon {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: #4CAF50; /* Adjust color as needed */
 }
