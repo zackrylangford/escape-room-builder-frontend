@@ -1,5 +1,5 @@
 // Imports from modularized JavaScript files
-import { showModal, setupModal } from './modal.js';
+import { showModal, setupModal, hideModal } from './modal.js';
 import { populateChallengeDropdown, createChallengeInput } from './challengeManager.js';
 import { displayAllGames } from './gameManager.js';
 import { resetForm } from './formUtilities.js';
@@ -39,12 +39,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const gameDescription = document.getElementById('gameDescription').value;
         const timeLimit = document.getElementById('timeLimit').value;
         const challenges = Array.from(document.querySelectorAll('.challenge')).map(challengeElement => {
+            console.log(challengeElement); // Log the challenge element to inspect its structure
             return {
                 title: challengeElement.querySelector('.challengeTitle').value,
                 description: challengeElement.querySelector('.challengeDescription').value,
                 type: challengeElement.querySelector('.challengeType').value
             };
         });
+        
 
         const gameData = {
             title: gameTitle,
@@ -60,14 +62,27 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             alert('Game added successfully');
-            resetForm();
-            displayAllGames();
+            resetCreateGameForm();  // Reset the form fields and challenges
+            displayAllGames();      // Refresh the displayed games
+            hideModal('createFormModal');  // Close the modal
         })
         .catch(error => {
             console.error("Error adding game: ", error);
         });
-
-        // Hide modal after saving the game
-        showModal('createFormModal');
     });
+
+    function resetCreateGameForm() {
+        // Reset input fields
+        document.getElementById('gameTitle').value = '';
+        document.getElementById('gameDescription').value = '';
+        document.getElementById('timeLimit').value = '';
+    
+        // Clear dynamically added challenges
+        const challengesContainer = document.getElementById('challengesContainer');
+        challengesContainer.innerHTML = '';
+    
+        // Optionally, add back a default/initial challenge form if needed
+        // createChallengeInput(); // Uncomment if you want an initial empty challenge form
+    }
+
 });
