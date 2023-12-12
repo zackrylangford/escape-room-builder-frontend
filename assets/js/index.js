@@ -38,6 +38,16 @@ document.getElementById('addChallenge').addEventListener('click', function() {
     createChallengeInput();
 });
 
+// After the DOM is fully loaded add the event listener to the "Remove Challenge" button
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.removeChallenge').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            const challenge = event.target.closest('.challenge');
+            challenge.parentNode.removeChild(challenge);
+        });
+    });
+});
+
 // Function to populate the challenge type select element
 function populateChallengeTypeSelect(challengeTypeSelect) {
     fetchChallenges()
@@ -58,6 +68,15 @@ function populateChallengeTypeSelect(challengeTypeSelect) {
 function createChallengeInput() {
     const challengeContainer = document.getElementById('challengesContainer');
     const newChallenge = document.createElement('div');
+    const removeChallengeButton = document.createElement('button');
+    removeChallengeButton.textContent = 'Remove Challenge';
+    removeChallengeButton.type = 'button'; // Make sure it doesn't submit the form
+    removeChallengeButton.classList.add('removeChallenge');
+    removeChallengeButton.onclick = function() {
+        challengeContainer.removeChild(newChallenge);
+    };
+
+    
     newChallenge.classList.add('challenge');
 
     // Create labels and input elements for challenge title, description, and type
@@ -97,9 +116,15 @@ function createChallengeInput() {
 
     newChallenge.appendChild(challengeTypeLabel);
     newChallenge.appendChild(challengeTypeSelect);
+    newChallenge.appendChild(removeChallengeButton);
 
     challengeContainer.appendChild(newChallenge);
+    
 }
+
+
+
+
 
 // Add event listener to "Save Game" button
 document.getElementById('saveGame').addEventListener('click', function() {
