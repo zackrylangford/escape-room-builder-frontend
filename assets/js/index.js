@@ -7,14 +7,15 @@ import { fetchWithAuth } from './api.js';
 
 // Setup for the modal and initializations on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
+
+    // Display all user-created games on page load
+    displayAllGames();
+    
     // Setup for 'Create New Escape Room' modal
     setupModal('createFormModal', 'closeModal');
 
     // Populate challenge dropdown on page load
     populateChallengeDropdown();
-
-    // Display all user-created games on page load
-    displayAllGames();
 
     // Event listener to open the 'Create New Escape Room' modal
     document.getElementById('openModalButton').addEventListener('click', function() {
