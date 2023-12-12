@@ -12,6 +12,18 @@
     cursor: pointer;
 }
 
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 1; /* Ensure it's below the modal but above everything else */
+}
+
+
 // Modal styles 
 .modal {
     position: fixed;
@@ -143,16 +155,18 @@ select {
     margin: 20px 0;
 }
 
-.horizontal-scroll {
+.games-container { /* Renamed from .horizontal-scroll */
     display: flex;
-    overflow-x: auto;
+    flex-wrap: wrap; /* Allow items to wrap */
+    justify-content: flex-start; /* Align items to the start of the container */
     padding: 10px 0;
 }
 
 .game {
     flex: 0 0 auto;
-    width: 300px;
+    width: 300px; /* Adjust as necessary */
     margin-right: 20px;
+    margin-bottom: 20px; /* Add bottom margin for spacing between rows */
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);

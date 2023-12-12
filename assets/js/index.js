@@ -4,18 +4,30 @@ displayAllGames();
 // Call to setup the challenge dropdown when the page initially loads
 populateChallengeDropdown();
 
-
-//open modal to create a new escape room game
+//modal to create a new escape room game
+// Open modal to create a new escape room game
 document.getElementById('openModalButton').addEventListener('click', function() {
     document.getElementById('createFormModal').style.display = 'block';
     document.getElementById('modalOverlay').style.display = 'block';
 });
 
-//close modal to create a new escape room game
+// Close modal when clicking the close button
 document.getElementById('closeModal').addEventListener('click', function() {
     document.getElementById('createFormModal').style.display = 'none';
     document.getElementById('modalOverlay').style.display = 'none';
 });
+
+// Close modal when clicking outside the modal (on the overlay)
+document.getElementById('modalOverlay').addEventListener('click', function() {
+    document.getElementById('createFormModal').style.display = 'none';
+    document.getElementById('modalOverlay').style.display = 'none';
+});
+
+// Optional: Prevent clicks inside the modal from closing it
+document.querySelector('.modal-content').addEventListener('click', function(event) {
+    event.stopPropagation();
+});
+
 
 // Function to fetch the list of challenges from your /challenges API endpoint
 function fetchChallenges() {
