@@ -1,3 +1,6 @@
+// Import the showModal and setupModal functions from modal.js
+import { showModal, setupModal } from './modal.js';
+
 
 // Call to display all user created games when the page initially loads
 displayAllGames();
@@ -5,9 +8,6 @@ displayAllGames();
 // Call to setup the challenge dropdown when the page initially loads
 populateChallengeDropdown();
 
-
-// Import the showModal and setupModal functions from modal.js
-import { showModal, setupModal } from './modal.js';
 
 // Add event listener to "Create New Escape Room" button to open the modal
 document.addEventListener('DOMContentLoaded', function() {
@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
         showModal('createFormModal');
     });
 });
+
+
 
 
 // Function to fetch the list of challenges from your /challenges API endpoint
