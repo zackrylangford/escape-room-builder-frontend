@@ -1,4 +1,5 @@
-#toggleFormButton {
+/* Styles for the modal trigger button (similar to the removed #toggleFormButton) */
+#openModalButton {
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
@@ -11,34 +12,93 @@
     cursor: pointer;
 }
 
-#createForm {
+// Modal styles 
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2; /* Above the overlay */
     background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     padding: 20px;
-    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 600px; /* Maximum width */
+    max-height: 80%; /* Maximum height */
+    width: 90%; /* Responsive width */
+    overflow-y: auto; /* Enable scrolling for longer content */
+    box-sizing: border-box;
 }
 
-#createForm label {
+.modal-content {
+    padding: 20px;
+}
+
+.modal-content h1 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal-content button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.modal-content button:hover {
+    background-color: #45a049;
+}
+
+.close-modal-button {
+    background-color: #f44336; /* Red */
+    /* Other styles */
+}
+
+
+/* Keep styles for form elements */
+label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-#createForm input[type="text"], 
-#createForm input[type="number"], 
-#createForm textarea, 
-#createForm select {
+input[type="text"], 
+input[type="number"], 
+textarea, 
+select {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box; /* Make sure padding doesn't affect overall width */
+    box-sizing: border-box;
 }
 
 #addChallenge, #saveGame {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -60,7 +120,7 @@
 }
 
 .removeChallenge {
-    background-color: #f44336; /* Red */
+    background-color: #f44336;
     color: white;
     padding: 6px 12px;
     border: none;
@@ -72,4 +132,42 @@
 
 .removeChallenge:hover {
     background-color: #d32f2f;
+}
+
+
+
+
+//////////////////////////////
+/* Styles for displaying games */
+.games-display {
+    margin: 20px 0;
+}
+
+.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.game {
+    flex: 0 0 auto;
+    width: 300px;
+    margin-right: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.game h3 {
+    margin-top: 0;
+}
+
+.game ul {
+    padding-left: 20px;
+}
+
+.game li {
+    list-style-type: disc;
 }

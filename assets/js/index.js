@@ -4,6 +4,19 @@ displayAllGames();
 // Call to setup the challenge dropdown when the page initially loads
 populateChallengeDropdown();
 
+
+//open modal to create a new escape room game
+document.getElementById('openModalButton').addEventListener('click', function() {
+    document.getElementById('createFormModal').style.display = 'block';
+    document.getElementById('modalOverlay').style.display = 'block';
+});
+
+//close modal to create a new escape room game
+document.getElementById('closeModal').addEventListener('click', function() {
+    document.getElementById('createFormModal').style.display = 'none';
+    document.getElementById('modalOverlay').style.display = 'none';
+});
+
 // Function to fetch the list of challenges from your /challenges API endpoint
 function fetchChallenges() {
     return fetchWithAuth('https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/challenges', {
@@ -123,9 +136,6 @@ function createChallengeInput() {
 }
 
 
-
-
-
 // Add event listener to "Save Game" button
 document.getElementById('saveGame').addEventListener('click', function() {
     // Get the values from the form
@@ -177,6 +187,9 @@ document.getElementById('saveGame').addEventListener('click', function() {
         .catch(error => {
             console.error("Error adding game: ", error);
         });
+
+    document.getElementById('createFormModal').style.display = 'none';
+    document.getElementById('modalOverlay').style.display = 'none';
 });
 
 
@@ -227,50 +240,43 @@ function resetForm() {
     }
 }
 
-
-
 // Function to fetch and display all games
 function displayAllGames() {
     const allGamesList = document.getElementById('allGames');
 
-    // Fetch all games from the database (replace '/your-games-api-endpoint' with the actual endpoint)
+    // Fetch all games from the database
     fetchWithAuth('https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/', {
         method: 'GET',
     })
         .then(games => {
-            // Clear existing list
-            allGamesList.innerHTML = '';
+            allGamesList.innerHTML = ''; // Clear existing content
 
-            // Display each game and its challenges in the list
             games.forEach(game => {
                 const gameContainer = document.createElement('div');
                 gameContainer.classList.add('game');
 
-                // Display game details
+                // Add game details to the card
                 const gameTitle = document.createElement('h3');
-                gameTitle.textContent = `Game Title: ${game.GameTitle.S}`;
+                gameTitle.textContent = game.GameTitle.S;
                 gameContainer.appendChild(gameTitle);
 
                 const gameDescription = document.createElement('p');
-                gameDescription.textContent = `Game Description: ${game.GameDescription.S}`;
+                gameDescription.textContent = game.GameDescription.S;
                 gameContainer.appendChild(gameDescription);
 
                 const timeLimit = document.createElement('p');
-                timeLimit.textContent = `Time Limit (seconds): ${game.TimeLimit.N}`;
+                timeLimit.textContent = `Time Limit: ${game.TimeLimit.N} seconds`;
                 gameContainer.appendChild(timeLimit);
 
-                // Display challenges for this game
+                // Add challenges list
                 const challengesList = document.createElement('ul');
-                challengesList.textContent = 'Challenges:';
-                gameContainer.appendChild(challengesList);
-
                 game.Challenges.L.forEach(challenge => {
                     const challengeItem = document.createElement('li');
-                    challengeItem.textContent = `Title: ${challenge.M.Title.S}, Description: ${challenge.M.Description.S}, Type: ${challenge.M.Type.S}`;
+                    challengeItem.textContent = `${challenge.M.Title.S}: ${challenge.M.Description.S} (Type: ${challenge.M.Type.S})`;
                     challengesList.appendChild(challengeItem);
                 });
+                gameContainer.appendChild(challengesList);
 
-                // Add the game container to the list
                 allGamesList.appendChild(gameContainer);
             });
         })
@@ -279,8 +285,3 @@ function displayAllGames() {
         });
 }
 
-// Function to hide add escape room game form
-document.getElementById('toggleFormButton').addEventListener('click', function() {
-    var form = document.getElementById('createForm');
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-});

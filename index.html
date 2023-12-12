@@ -4,56 +4,68 @@ title: Home
 javascript: index
 ---
 <div class="protected-content">
-    <button id="toggleFormButton">+ Add New Escape Room</button>
-    <div id="createForm" style="display: none;">
-    <!-- Game Title -->
-    <label for="gameTitle">Game Title:</label>
-    <input type="text" id="gameTitle" placeholder="Enter Game Title">
-    <br><br>
-    
-    <!-- Description -->
-    <label for="gameDescription">Description:</label>
-    <textarea id="gameDescription" placeholder="Enter Game Description"></textarea>
-    <br><br>
-    
-    <!-- Time Limit -->
-    <label for="timeLimit">Time Limit (in seconds):</label>
-    <input type="number" id="timeLimit" placeholder="Enter Time Limit">
-    <br><br>
-    
-    <!-- Challenges -->
-    <h2>Challenges:</h2>
-    <div id="challengesContainer">
-        <!-- Individual Challenge -->
-        <div class="challenge">
-            <label for="challengeTitle">Challenge Title:</label>
-            <input type="text" class="challengeTitle" placeholder="Enter Challenge Title">
-            <br>
-            <label for="challengeDescription">Challenge Description:</label>
-            <textarea class="challengeDescription" placeholder="Enter Challenge Description"></textarea>
-            <br>
-            <label for="challengeType">Challenge Type:</label>
-            <select class="challengeType" id="challengeType">
-                <!-- Challenge types will be populated dynamically -->
-            </select>
-            <button type="button" class="removeChallenge">Remove Challenge</button>
+<!-- Modal Overlay -->
+<div id="modalOverlay" class="modal-overlay" style="display: none;"></div>
+
+<!-- Modal for Create Form -->
+<div id="createFormModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h1>Create a New Escape Room</h1>
+        
+        <!-- Game Title -->
+        <label for="gameTitle">Game Title:</label>
+        <input type="text" id="gameTitle" placeholder="Enter Game Title">
+        <br><br>
+        
+        <!-- Description -->
+        <label for="gameDescription">Description:</label>
+        <textarea id="gameDescription" placeholder="Enter Game Description"></textarea>
+        <br><br>
+        
+        <!-- Time Limit -->
+        <label for="timeLimit">Time Limit (in seconds):</label>
+        <input type="number" id="timeLimit" placeholder="Enter Time Limit">
+        <br><br>
+        
+        <!-- Challenges -->
+        <h2>Challenges:</h2>
+        <div id="challengesContainer">
+            <!-- Individual Challenge -->
+            <div class="challenge">
+                <label for="challengeTitle">Challenge Title:</label>
+                <input type="text" class="challengeTitle" placeholder="Enter Challenge Title">
+                <br>
+                <label for="challengeDescription">Challenge Description:</label>
+                <textarea class="challengeDescription" placeholder="Enter Challenge Description"></textarea>
+                <br>
+                <label for="challengeType">Challenge Type:</label>
+                <select class="challengeType" id="challengeType">
+                    <!-- Challenge types will be populated dynamically -->
+                </select>
+                <button type="button" class="removeChallenge">Remove Challenge</button>
+            </div>
         </div>
+        <button id="addChallenge">Add Challenge</button>
+        <br><br>
+        
+        <!-- Save Game Button -->
+        <button id="saveGame">Save Game</button>
+        <!-- Close Modal Button -->
+        <button id="closeModal" class="close-modal-button">Close</button>
     </div>
-    <button id="addChallenge">Add Challenge</button>
-    <br><br>
-    
-    <!-- Save Game Button -->
-    <button id="saveGame">Save Game</button>
-</div>
 </div>
 
+<!-- Trigger Button for Modal -->
 
-<!-- Display all games below the form -->
+    <button id="openModalButton">+ Add New Escape Room</button>
+
+<!-- Display all games below the modal -->
 <br><br>
 <div class="games-display">
     <h2>All Games:</h2>
-    <div id="allGames">
+    <div id="allGames" class="horizontal-scroll">
         <!-- Games will be dynamically added here -->
     </div>
 </div>
 
+</div>
