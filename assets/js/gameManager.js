@@ -171,3 +171,24 @@ document.getElementById('saveChanges').addEventListener('click', function() {
         console.error("Error updating game: ", error);
     });
 });
+
+// Event listener for "Delete Game" button
+document.querySelector('.delete-icon').addEventListener('click', function() {
+    const gameId = document.getElementById('hiddenGameId').value;
+    if (gameId && confirm("Are you sure you want to delete this game?")) {
+        fetchWithAuth(`https://sfw4prb6a8.execute-api.us-east-1.amazonaws.com/Prod/${gameId}`, {
+            method: 'DELETE',
+        })
+        // .then(response => response.json()) // Directly parse the JSON without checking response.ok
+        .then(data => {
+            alert('Game deleted successfully.');
+            hideModal('editGameModal');
+            displayAllGames(); // Refresh the list of games
+        })
+        .catch(error => {
+            console.error("Error deleting game: ", error);
+            alert("There was an error deleting the game.");
+        });
+    }
+});
+
