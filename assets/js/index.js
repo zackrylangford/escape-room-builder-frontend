@@ -1,31 +1,23 @@
+
 // Call to display all user created games when the page initially loads
 displayAllGames();
 
 // Call to setup the challenge dropdown when the page initially loads
 populateChallengeDropdown();
 
-//modal to create a new escape room game
-// Open modal to create a new escape room game
-document.getElementById('openModalButton').addEventListener('click', function() {
-    document.getElementById('createFormModal').style.display = 'block';
-    document.getElementById('modalOverlay').style.display = 'block';
-});
 
-// Close modal when clicking the close button
-document.getElementById('closeModal').addEventListener('click', function() {
-    document.getElementById('createFormModal').style.display = 'none';
-    document.getElementById('modalOverlay').style.display = 'none';
-});
+// Import the showModal and setupModal functions from modal.js
+import { showModal, setupModal } from './modal.js';
 
-// Close modal when clicking outside the modal (on the overlay)
-document.getElementById('modalOverlay').addEventListener('click', function() {
-    document.getElementById('createFormModal').style.display = 'none';
-    document.getElementById('modalOverlay').style.display = 'none';
-});
+// Add event listener to "Create New Escape Room" button to open the modal
+document.addEventListener('DOMContentLoaded', function() {
+    // Setup for 'Create New Escape Room' modal
+    setupModal('createFormModal', 'closeModal');
 
-// Optional: Prevent clicks inside the modal from closing it
-document.querySelector('.modal-content').addEventListener('click', function(event) {
-    event.stopPropagation();
+    // Event listener to open 'Create New Escape Room' modal
+    document.getElementById('openModalButton').addEventListener('click', function() {
+        showModal('createFormModal');
+    });
 });
 
 

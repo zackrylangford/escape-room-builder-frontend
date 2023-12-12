@@ -48,6 +48,6 @@ checkSession();
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1049.0.min.js"></script>
 <!-- aws cognito -->
 <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.2.0/dist/amazon-cognito-identity.min.js"></script>
-<script src="{{ '/assets/js/' | append: page.javascript | append: '.js' | relative_url }}"></script>
+<script type="module" src="{{ '/assets/js/' | append: page.javascript | append: '.js' | relative_url }}"></script>
 </body>
 </html>
