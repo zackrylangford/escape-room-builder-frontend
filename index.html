@@ -4,8 +4,8 @@ title: Home
 javascript: index
 ---
 <div class="protected-content">
-    <h1>Create a New Escape Room Game</h1>
-    
+    <button id="toggleFormButton">+ Add New Escape Room</button>
+    <div id="createForm" style="display: none;">
     <!-- Game Title -->
     <label for="gameTitle">Game Title:</label>
     <input type="text" id="gameTitle" placeholder="Enter Game Title">
@@ -44,9 +44,11 @@ javascript: index
     <!-- Save Game Button -->
     <button id="saveGame">Save Game</button>
 </div>
+</div>
 
-<!-- Existing HTML content above -->
 
+<!-- Display all games below the form -->
+<br><br>
 <div class="games-display">
     <h2>All Games:</h2>
     <div id="allGames">

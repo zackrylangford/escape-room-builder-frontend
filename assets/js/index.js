@@ -253,3 +253,9 @@ function displayAllGames() {
             console.error("Error fetching games: ", error);
         });
 }
+
+// Function to hide add escape room game form
+document.getElementById('toggleFormButton').addEventListener('click', function() {
+    var form = document.getElementById('createForm');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+});
