@@ -84,9 +84,12 @@
     background-color: #45a049;
 }
 
-.close-modal-button {
-    background-color: #f44336; /* Red */
-    /* Other styles */
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 25px;
+    cursor: pointer;
 }
 
 

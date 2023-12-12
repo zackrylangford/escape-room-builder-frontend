@@ -1,10 +1,10 @@
 //function to get the id token from local storage and add it to the headers of the fetch request
 export function fetchWithAuth(url, options = {}) {
     const idToken = localStorage.getItem("IdToken");
-    console.log("Retrieved Token: ", idToken);
+    //console.log("Retrieved Token: ", idToken);
 
     if (!idToken) {
-        console.log("No token found. Redirecting to login.");
+        //console.log("No token found. Redirecting to login.");
         window.location.href = '/login.html';
         return;
     }
@@ -15,11 +15,11 @@ export function fetchWithAuth(url, options = {}) {
     };
 
     const fetchOptions = { ...options, headers };
-    console.log("Fetching URL with options: ", url, JSON.stringify(fetchOptions, null, 2));
+    //console.log("Fetching URL with options: ", url, JSON.stringify(fetchOptions, null, 2));
 
     return fetch(url, fetchOptions)
         .then(response => {
-            console.log("Raw Response: ", response);
+            //console.log("Raw Response: ", response);
 
             if (response.ok && response.headers.get('content-type')?.includes('application/json')) {
                 return response.json();
