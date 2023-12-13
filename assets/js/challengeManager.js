@@ -4,7 +4,7 @@ import { fetchChallenges } from './api.js';
 export function populateChallengeDropdown() {
     const challengeTypeSelects = document.querySelectorAll('.challengeType');
 
-    fetchChallenges()
+     fetchChallenges()
         .then(challenges => {
             // Assuming the API returns an array of challenge objects with id and Description attributes
             challenges.forEach(challenge => {

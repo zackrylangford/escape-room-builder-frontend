@@ -11,6 +11,7 @@ javascript: index
 <!-- Modal for Create Form -->
 <div id="createFormModal" class="modal" style="display: none;">
     <div class="modal-content">
+        <span class="modal-close">&times;</span>
         <h1>Create a New Escape Room</h1>
         
         <!-- Game Title -->
@@ -51,8 +52,6 @@ javascript: index
         
         <!-- Save Game Button -->
         <button id="saveGame">Save Game</button>
-        <!-- Close Modal Button -->
-        <button id="closeModal" class="close-modal-button">Close</button>
     </div>
 </div>
 
@@ -68,6 +67,42 @@ javascript: index
         <!-- Games will be dynamically added here -->
     </div>
 </div>
+
+<!-- Edit Game Modal -->
+<div id="editGameModal" class="modal" style="display: none;">
+    <input type="hidden" id="hiddenGameId">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h1>Edit Escape Room</h1>
+ <!-- Delete Game Button -->
+ <span class="delete-icon" title="Delete Game"> <i class="bi bi-trash"></i></span> <!-- Trash can icon -->
+
+        <!-- Game Title -->
+        <label for="editGameTitle">Game Title:</label>
+        <input type="text" id="editGameTitle" placeholder="Enter Game Title">
+        <br><br>
+
+        <!-- Game Description -->
+        <label for="editGameDescription">Description:</label>
+        <textarea id="editGameDescription" placeholder="Enter Game Description"></textarea>
+        <br><br>
+
+        <!-- Time Limit -->
+        <label for="editTimeLimit">Time Limit (in seconds):</label>
+        <input type="number" id="editTimeLimit" placeholder="Enter Time Limit">
+        <br><br>
+
+        <!-- Challenges -->
+        <label for="editChallenges">Challenges:</label> 
+        <!-- Challenges will be dynamically added here -->
+        <div id="editChallengesContainer"></div>
+
+        <!-- Save Changes Button -->
+        <button id="saveChanges">Save Changes</button>
+    </div>
+</div>
+
+
 
 
 </div>
